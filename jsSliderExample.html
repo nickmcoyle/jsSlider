@@ -1,16 +1,15 @@
-<h2>Introduction to K-line Arduino Communication</h2>
+<h2>Example jsSlider</h2>
 
-<p>While a lot of people are making interfaces to connect an Arduino microcontroller to their cars, I wanted to get in on the action. Unfortunately for me, my car is a 2005 Toyota Camry which uses the older K-line interface for communication. Since 2008, all cars went to CAN BUS standard which is what all of the Arduino shields available are made to work with. The hardware available will not work with older cars and there is not much information available on the older OBD interfaces for pre-2008 vehicles. So I gathered everything out there and added my own findings for this tutorial.</p>
-
-<h2>Making an Arduino Trip Computer for&nbsp;2005 Toyota Camry</h2>
+<p>While a lot of people are making sliders, they tend to use a lot of frameworks, and I just wanted to make my own to see how hard it would be to make one from scratch using only plain javscript.</p>
 
 <h3>Goals for this project</h3>
 
 <ul>
-	<li>Begin communication with car computer</li>
-	<li>Request commonly available PID codes to get data from car computer (<a href="https://en.wikipedia.org/wiki/OBD-II_PIDs" target="blank">more information on PID codes from Wikipedia</a>)</li>
-	<li>Display vehicle speed in MPH</li>
-	<li>Calculate and display instantaneous miles per gallon MPG fuel consumption</li>
+	<li>dont use any frameworks, only vanilla javascript</li>
+	<li>try to make it work down to at least ie8 and try to make it very fast so the user doesn't notice any lag or jerkiness in the slider</li>
+	<li>make it responsive so it works on mobile too</li>
+	<li>use vector graphics for buttons and dots so they will scale well</li>
+	<li>make it a plugin so anyone can use it on their webpage by including my js and css files and calling a constructor</li>
 </ul>
 
 <p>&nbsp;</p>
@@ -18,172 +17,30 @@
 <h3>What you will need</h3>
 
 <ul>
-	<li>Arduino Uno Microcontroller $2</li>
-	<li>MC33290, ISO K Line Serial Link Interface Chip (converts the 12 volt logic of the car computer to 5 volt that is compatible with the Arduino. Essentially takes the place of the Can Bus shield) $2</li>
-	<li>SOT23 to DIP10 Adapter PCB Board Convertor (makes hand soldering to SMD chip possible) $3</li>
-	<li>LCD display $10</li>
-	<li>OBD port connector $8</li>
-	<li>One 510 ohm resistor $0.25</li>
-	<li>Wires $4</li>
+	<li>download the css and js files in this repository and include them in your webpage</li>
+	<li>insert a div into your HTML with id="sliderContainer"</li>
+	<li>write 2 lines of javascript on your page, one line creates a new instance of the slider, the 2nd line instantiates it</li>
+	
 </ul>
-
+<h3>Here is what it looks like</h3>
 <p><br />
 <!--begin slider html-->
-<div id="sliderContainerslider1"></div>
+<div id="sliderContainer"></div>
 <br/>
-<div id="sliderContainerslider2"></div>
+<!-- <div id="sliderContainerslider2"></div> -->
 <!-- end slider html -->
 
 <br />
 
 
-<p><b>Total Cost: under $40</b> I buy everything off eBay (including Chinese clone arduinos) or from a local electronics store.</p>
+<p><b>Total Cost: under free</p>
 
 <h2>Downloads</h2>
 
-<p>Download the source code on github:&nbsp;<a href="https://github.com/nickmcoyle/openGaugeSimplified.git" target="blank">Opengauge simplified code</a></p>
+<p>Download the source code on github:&nbsp;<a href="https://github.com/nickmcoyle/jsSlider.git" target="blank">jsSlider code</a></p>
 
 <p>&nbsp;</p>
 
-<h2>How to Tell Which OBD Protocol&nbsp;Your Car Uses</h2>
-
-<p>All cars and light trucks built and sold in the United States after January 1, 1996 were required to be OBD II equipped, but several standards exist for the communications protocol. Here is a table of common protocols by manufacturer, though as I will show next, you can easily figure out which protocol is in use by examining the OBD port:</p>
-
-<table class="table">
-	<tbody>
-		<tr>
-			<th>Manufacturer</th>
-			<th>OBD Protocol</th>
-		</tr>
-		<tr>
-		</tr>
-		<tr>
-			<td>SAE J1850 VPW</td>
-			<td>GM vehicles</td>
-		</tr>
-		<tr>
-		</tr>
-		<tr>
-			<td>SAE J1850 PWM</td>
-			<td>Ford</td>
-		</tr>
-		<tr>
-			<td>ISO 9141-2 K-Line</td>
-			<td>Chrysler and most Asian Cars</td>
-		</tr>
-		<tr>
-			<td>ISO 14230 KWP2000</td>
-			<td>Some Asian Cars</td>
-		</tr>
-		<tr>
-			<td>CAN</td>
-			<td>All 2008+ vehicles</td>
-		</tr>
-	</tbody>
-</table>
-
-<p><a class="fancy_image" href="/uploads/post/image/26/content_OBDII_connector.GIF"><img alt="OBDII Connector" class="img img-responsive img-thumbnail" src="/uploads/post/image/26/content_OBDII_connector.GIF" /></a></p>
-
-<ul>
-	<li>Pin 2 - J1850 Bus+</li>
-	<li>Pin 4 - Chassis Ground</li>
-	<li>Pin 5 - Signal Ground</li>
-	<li>Pin 6 - CAN High (J-2284)</li>
-	<li>Pin 7 - ISO 9141-2 K Line</li>
-	<li>Pin 10 - J1850 Bus</li>
-	<li>Pin 14 - CAN Low (J-2284)</li>
-	<li>Pin 15 - ISO 9141-2 L Line</li>
-	<li>Pin 16 - Battery Power</li>
-</ul>
-
-<p>You can examine the pinout of your OBD port to determine which communications protocol it uses. For example, on my Camry, only pins 4,5,7,13,15, and 16 were populated. This told me it could only be using K-line protocol. Pin 15 is ISO-9141 L-Line but it doesn&#39;t need to connect to the Arduino for any reason.</p>
-
-<div class="row">
-<div class="col-md-6 col-sm-10 col-xs-12"><a class="fancy_image" href="/uploads/post/image/28/content_OBDII_Port_2005_Toyota_Camry.png"><img alt="OBDII Port 2005 Toyota Camry" class="img img-responsive img-thumbnail" src="/uploads/post/image/28/content_OBDII_Port_2005_Toyota_Camry.png" /></a></div>
-
-<div class="col-md-6 col-sm-2 col-xs-0">&nbsp;</div>
-</div>
-
-<div style="page-break-after: always"><span style="display: none;">&nbsp;</span></div>
-
-<h2>Connecting the Arduino to the Car</h2>
-
-<h4><u>Step 1: prepare OBD cable</u></h4>
-
-<p>If you bought a cheap OBD cable it is probably wired to connect to a CAN BUS enabled vehicle. You will need to cut it open and make sure the wires connect to pins 4, 7, and 16 of the OBD port. I recommend using a multimeter to check the wiring.</p>
-
-<h4><u>Step 2: solder the MC33290 chip</u></h4>
-
-<p>The MC33290 comes in a SMD mount package which is not so useful to us because the pins are small and break easily. Solder the chip to a DIP adapter board so you can solder wires to it reliably.</p>
-
-<h4><u>Step 3: Connect all wiring between components</u></h4>
-
-<p>Check out the <a href="/uploads/MC33290_data_sheet.pdf" target="blank">data sheet for the MC33290 here</a>. This microcontroller allows bidirectional communication between the K line interface of the onboard computer in the car and an Arduino. It does this by level shifting the logic signals. The ecu in your car uses 12v logic since it runs on a 12v battery. But the Arduino microcontroller uses 5v logic signals.</p>
-
-<p><a href="/uploads/K-Line_Can_Lin_whitepaper.pdf" target="blank">Info on MC33290 and 3 common ecu protocols here</a></p>
-
-<p>I used a prototyping breadboard and prototyping wires to connect everything at first but found the wires came loose after a few car rides. You&#39;ll want to permanently solder wires for reliability. See the wiring diagram below:</p>
-
-<p>&nbsp;</p>
-
-<div class="row">
-
-
-<div class="col-md-6 col-sm-2 col-xs-0">&nbsp;</div>
-</div>
-
-<p>&nbsp;</p>
-
-<h4><u>Step 4: Upload source code to Arduino board</u></h4>
-
-<p>&nbsp;</p>
-
-<p>Download the source code on github:&nbsp;<a href="https://github.com/nickmcoyle/openGaugeSimplified.git" target="blank">Opengauge simplified code</a></p>
-
-<p>I owe a lot to the community for this code. The code is based very closely off the obduino project found on github. An open source collaboration among many dedicated individuals.</p>
-
-<div class="row">
-
-
-
-</div>
-
-<p>&nbsp;</p>
-
-<h2>How to Calculate Miles Per Gallon MPG from MAF (Mass Air Flow Sensor)</h2>
-
-<p>&nbsp;</p>
-
-<p>It is a common feature on newer cars to display information like gas mileage and average fuel consumption for a trip. How does the car know how much fuel is being consumed at any given moment? In this case, we are calculating the figure using a commonly available PID code MAF or mass air flow rate. It tells us how much air is coming into the engine in grams per second. Assuming the engine is attaining an ideal air to fuel ratio as well as a few other constants, we can use an equation to calculate fuel burned per second and convert it to miles per gallon:</p>
-
-<h4>MPG = (14.7 * 6.17 * 4.54 * VSS * 0.621371) / (3600 * MAF / 100)</h4>
-
-<ul>
-	<li>14.7 grams of air to 1 gram of gasoline - ideal air/fuel ratio</li>
-	<li>6.17 pounds per gallon - density of gasoline</li>
-	<li>4.54 grams per pound - conversion</li>
-	<li>VSS - vehicle speed in kilometers per hour</li>
-	<li>0.621371 miles per hour/kilometers per hour - conversion</li>
-	<li>3600 seconds per hour - conversion</li>
-	<li>MAF - mass air flow rate in 100 grams per second</li>
-	<li>100 - to correct MAF to give grams per second</li>
-</ul>
-
-<p>&nbsp;</p>
-
-<h2>Other Projects Gallery</h2>
-
-<p><a href="http://www.instructables.com/id/Low-Cost-OBD2-Communications-on-K-line-ISO-9141-2-/" target="blank">Cheap K-Line trip computer for Citroen vehicle on instructables</a></p>
-
-<p><a href="http://rvmiller.com/tag/iso9141/" target="blank">Ryan Miller&#39;s ODBII Arduino Interface</a></p>
-
-<p><a href="https://github.com/Magister54/opengauge/tree/master/obduino" target="blank">obduino master on github</a></p>
-
-<h2>Test and Send Your Feedback</h2>
-
-<p>Give this project a try and let me know how it goes in the comments section. Also send me any questions or suggestions you may have!</p>
-
-<p>&nbsp;</p>
 
 <script src="jsSlider.js"></script>
 <link rel="stylesheet" type="text/css" href="jsSlider.css">
@@ -224,7 +81,7 @@
 				];
 	slider1.initializeSlider();
 	
-	var slider2 = new slider("slider2");	
+	/* var slider2 = new slider("slider2");	
 	slider2.slides = [
 					{
 					  element: 'http://www.nickmcoyle.com/uploads/post/image/37/content_MC33290.png',
@@ -255,7 +112,8 @@
 					  caption: "Jumper Wires"
 					}
 				];
-	slider2.initializeSlider();
+	slider2.initializeSlider(); 
+	*/
 	
 	
 </script>

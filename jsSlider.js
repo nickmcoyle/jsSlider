@@ -20,7 +20,7 @@ var slider = function(instance) {
 		];
 		//changes the selected element displayed in the slider, element (i), that is selected through a click or swipe
 		this.displayElement = function(i) {
-			var sliderContainer = document.getElementById('sliderContainer'+instance).getElementsByTagName('img')[0];			
+			var sliderContainer = document.getElementById('sliderContainer').getElementsByTagName('img')[0];			
 			var image = this.slides[i].element;			
 			sliderContainer.src = image;
 			var sliderCaptionContainer = document.getElementById('sliderCaption');
@@ -98,7 +98,7 @@ var slider = function(instance) {
 		this.initializeSlider = function() {	
 		
 			 //append a ton of HTML to the dom for the slider to go into
-			 var sliderContainer = document.getElementById('sliderContainer'+instance);
+			 var sliderContainer = document.getElementById('sliderContainer');
 			 var sliderDiv = document.createElement("div");
 			 sliderDiv.id = "slider";
 			 var imgContainer = document.createElement("div");
