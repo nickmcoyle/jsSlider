@@ -1,0 +1,161 @@
+@media screen and (max-width: 480px) {
+#sliderContainer {
+    background-color: white;	
+    border: 1px solid #bbb; 		
+	width: 100%;
+	height: auto;
+    margin: auto;
+	font-size: 0.7em;
+}
+#slider {	
+	margin: auto;
+	width: 80%;		
+	position: relative;
+	height: 225px;
+    	
+}
+.img-thumbnail  {
+border:none;
+}
+.thumbnail  {
+border:none;
+}
+#imgContainer {		
+	max-width: 90%;		
+	position:relative;    	
+	overflow:hidden;
+    border:none;	
+}
+#imgContainer img {	
+	height: auto; 
+    width: auto; 
+	max-width: 90%;
+	max-height: 90%;	
+	position:relative;
+    left: 12%;
+	margin-top: 5%;	
+}
+}
+
+@media screen and (min-width: 480px) and (max-width: 980px){
+#sliderContainer {
+    background-color: white;	
+    border: 1px solid #bbb; 		
+	width: 80%;	
+    margin: auto;
+}
+#slider {	
+	margin: auto;
+	width: 80%;		
+	position: relative;
+	height: 275px;
+    	
+}
+.img-thumbnail  {
+border:none;
+}
+.thumbnail  {
+border:none;
+}
+#imgContainer {	
+	max-height: 90%;
+	max-width: 90%;		
+	position:relative;    	
+	overflow:hidden;
+    border:none;
+}
+#imgContainer img {	
+	height: auto; 
+    width: auto; 
+	max-width: 90%;
+	max-height: 90%;	
+	position:relative;
+    left: 12%;
+	margin-top: 5%;	
+}
+}
+
+@media screen and (min-width: 980px) {
+#sliderContainer {
+    background-color: white;	
+    border: 1px solid #bbb;
+    height: 350px;
+	width: 450px;
+    font-size: 0.8em;
+	margin: auto;	
+}
+#slider {		 	
+	margin: auto;
+	width: 80%;		
+	position: relative;
+	height: 330px;		
+    	
+}
+.img-thumbnail  {
+border:none;
+}
+.thumbnail  {
+border:none;
+}
+#imgContainer {	
+	max-height: 90%;
+	max-width: 90%;		
+	position:absolute;
+    left: 5%;	
+	overflow:hidden;
+    border:none;
+}
+#imgContainer img {	
+	height: auto; 
+    width: auto; 
+	max-width: 90%;
+	max-height: 90%;	
+	position:relative;
+    left: 5%;
+	margin-top: 5%;		
+}
+}
+#nextBtn {	
+	position: absolute;
+	top: 35%;
+	right: -15%;
+	width: 17%;
+	height: 35%; 
+}
+#previousBtn {
+	position: absolute;
+	top: 35%;
+	left:-15%;
+	width: 17%;
+	height: 35%;
+}
+.arrowSVG {		
+	fill:none;
+	stroke:#bbb;		
+	stroke-width:360;
+}
+.sliderBtn {	
+	background: none;	
+	border: none;	
+	cursor: pointer;
+}
+.indexSVG {
+	fill: white; 
+}
+.indexSVG circle:hover {	
+	fill: #bbb;
+	cursor: pointer; 
+}
+#sliderCaption {
+	position: absolute;
+	bottom: -2%;
+	left: 5%;
+}
+#indexContainer {	
+	position: absolute;
+	bottom: 8%;
+	left: 45%;   
+}
+.active {
+	fill: #bbb; 
+}
